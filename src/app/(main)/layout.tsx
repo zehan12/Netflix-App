@@ -252,9 +252,9 @@ function Footer() {
         </div>
       </div>
       <div className="text-center font-semibold text-neutral-300">
-        Built by Apestein. The source code is available on&nbsp;
+        Built by zehan12. The source code is available on&nbsp;
         <a
-          href="https://github.com/Apestein/nextflix"
+          href="https://github.com/zehan12/Netflix-App"
           target="_blank"
           rel="noreferrer"
           className="font-medium underline underline-offset-4"

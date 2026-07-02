@@ -28,7 +28,7 @@ Next.js 13 app router overall was a joy to work with and is GREATLY superior to 
 Clerk was amazing to work with in terms of DX. Extremely easy to setup and get rolling. However, there is a major problems that's a deal breakers until they fix it.
 
 - Clerk causes your entire app to be dyamically rendered. Meaning you can not benefit from things like SSG and ISR. Override with "cache: force-cache" or "revalidate = 0" is not possible.
-  ![Screenshot (83)](https://github.com/Apestein/nextflix/assets/107362680/6d2d89d0-63f3-4d6c-97a7-3a12f514868e)
+  ![Screenshot (83)](https://github.com/zehan12/Netflix-App/assets/107362680/6d2d89d0-63f3-4d6c-97a7-3a12f514868e)
 
 ### Thoughts about Neon
 
@@ -46,15 +46,15 @@ CreateT3App comes with some nice things like T3 Env and Typescript-Eslint precon
 
 Some people like to break everything down into neat little components and organize them into different files. I prefer big files, nothing gets extracted until it gets used in at least 2 different places.
 If your site is complex you will probably need many different layout. Your root layout.tsx file should contain only the things shared by your entire app. For parts of your site that need different layout use [route groups](https://nextjs.org/docs/app/building-your-application/routing/route-groups).
-![Screenshot (74)](https://github.com/Apestein/nextflix/assets/107362680/44bffd04-e537-49ca-a945-1b1185a4b64f)
+![Screenshot (74)](https://github.com/zehan12/Netflix-App/assets/107362680/44bffd04-e537-49ca-a945-1b1185a4b64f)
 
 ### Tricky Things To Consider (I will be going over things I found tricky or difficult in this section)
 
-#### 1. You will no doubt run into problems with Next.js aggressive caching. To invalidate router cache, you must use [RevalidatePath/Tage in server action](https://nextjs.org/docs/app/building-your-application/caching#invalidation-1). However, Revalidate/Tag also causes the current page to refresh. I don't know why Next.js decided to do this but get around this I use this [LinkButton](https://github.com/Apestein/nextflix/blob/main/src/components/link-button.tsx) component. See the problem below.
+#### 1. You will no doubt run into problems with Next.js aggressive caching. To invalidate router cache, you must use [RevalidatePath/Tage in server action](https://nextjs.org/docs/app/building-your-application/caching#invalidation-1). However, Revalidate/Tag also causes the current page to refresh. I don't know why Next.js decided to do this but get around this I use this [LinkButton](https://github.com/zehan12/Netflix-App/blob/main/src/components/link-button.tsx) component. See the problem below.
 
-[scrnli_8_22_2023_12-30-04 PM2.webm](https://github.com/Apestein/nextflix/assets/107362680/da7dd256-0a91-4ce5-99c6-698bc37d8013)
+[scrnli_8_22_2023_12-30-04 PM2.webm](https://github.com/zehan12/Netflix-App/assets/107362680/da7dd256-0a91-4ce5-99c6-698bc37d8013)
 
-#### 2. When a new user creates an account or signs in with Clerk's oauth I needed to create an account and profile in my database. At first, I was using Clerk's webhook to create them but the problem was users would get redirected to the landing page before the webhook could add the account and profile to the database. As a result, when users first creates the account. The UserButton component that displayed their avatar and profile infomation was missing. To get around this, I had a [CustomUserComponent](<https://github.com/Apestein/nextflix/blob/main/src/app/(main)/layout.tsx>) check if the user exist in the database or not (if not, add).
+#### 2. When a new user creates an account or signs in with Clerk's oauth I needed to create an account and profile in my database. At first, I was using Clerk's webhook to create them but the problem was users would get redirected to the landing page before the webhook could add the account and profile to the database. As a result, when users first creates the account. The UserButton component that displayed their avatar and profile infomation was missing. To get around this, I had a [CustomUserComponent](<https://github.com/zehan12/Netflix-App/blob/main/src/app/(main)/layout.tsx>) check if the user exist in the database or not (if not, add).
 
 ```ts
 async function CustomeUserButton() {
@@ -74,7 +74,7 @@ Additionally, you should wrap the component in suspense to not block the UI and 
 </Suspense>
 ```
 
-#### 3. I had an object that I needed to extract a tuple from to validate with zod. [Here is how](https://github.com/Apestein/nextflix/blob/main/src/lib/configs.ts).
+#### 3. I had an object that I needed to extract a tuple from to validate with zod. [Here is how](https://github.com/zehan12/Netflix-App/blob/main/src/lib/configs.ts).
 
 ```ts
 export const createCheckoutSession = authAction(
@@ -85,9 +85,9 @@ export const createCheckoutSession = authAction(
 }
 ```
 
-![Screenshot (78)](https://github.com/Apestein/nextflix/assets/107362680/98e2f8f8-3b44-46d7-baa6-abe95d8463fa)
+![Screenshot (78)](https://github.com/zehan12/Netflix-App/assets/107362680/98e2f8f8-3b44-46d7-baa6-abe95d8463fa)
 
-#### 4. Infinite scrolling can be tricky to implement yourself. Typically, I would use React Query/SWR to do this but I wanted to implement it with [server actions](https://github.com/Apestein/nextflix/blob/main/src/actions/index.ts) this time.
+#### 4. Infinite scrolling can be tricky to implement yourself. Typically, I would use React Query/SWR to do this but I wanted to implement it with [server actions](https://github.com/zehan12/Netflix-App/blob/main/src/actions/index.ts) this time.
 
 ```ts
 // actions/index.ts
@@ -111,7 +111,7 @@ export const getMyShowsInfinite = authAction(
 )
 ```
 
-Then, I use this modified [infinite scroll component](https://github.com/Apestein/better-react-infinite-scroll) that I created. See the implementation [here](<https://github.com/Apestein/nextflix/blob/main/src/app/(main)/my-list/infinite-scroller.tsx>), ignore the stuff about simulated shows. Important thing to understand is inside IntersectionObserver callback function, you must use refs instead of state. That is because of scoping, the callback is only created once and all the variables inside are snapshotted. To get around this you need to use refs. There maybe other ways, I'm just listing what I know.
+Then, I use this modified [infinite scroll component](https://github.com/zehan12/better-react-infinite-scroll) that I created. See the implementation [here](<https://github.com/zehan12/Netflix-App/blob/main/src/app/(main)/my-list/infinite-scroller.tsx>), ignore the stuff about simulated shows. Important thing to understand is inside IntersectionObserver callback function, you must use refs instead of state. That is because of scoping, the callback is only created once and all the variables inside are snapshotted. To get around this you need to use refs. There maybe other ways, I'm just listing what I know.
 
 ```ts
 const observer = new IntersectionObserver((entries) => {
@@ -119,28 +119,28 @@ const observer = new IntersectionObserver((entries) => {
 })
 ```
 
-[scrnli_8_22_2023_12-42-31 PM3.webm](https://github.com/Apestein/nextflix/assets/107362680/e9ceae54-1ea0-4c89-97c7-0d87d12bd135)
+[scrnli_8_22_2023_12-42-31 PM3.webm](https://github.com/zehan12/Netflix-App/assets/107362680/e9ceae54-1ea0-4c89-97c7-0d87d12bd135)
 
 #### 5. For Stripe intergration. Reference these 2 repos and mine also of course. Be careful with webhooks, use the Stripe CLI to forward events to your local environment when testing.
 
 - [Official Next.js example using server actions](https://github.com/vercel/next.js/tree/canary/examples/with-stripe-typescript)
 - [Taxonomy](https://github.com/shadcn-ui/taxonomy)
 
-#### 6. Optimistic update with server actions can be tricky. Using next-safe-action's useOptimisticAction hook helps here. [Here is how I did it](https://github.com/Apestein/nextflix/blob/main/src/components/modal-card.tsx).
+#### 6. Optimistic update with server actions can be tricky. Using next-safe-action's useOptimisticAction hook helps here. [Here is how I did it](https://github.com/zehan12/Netflix-App/blob/main/src/components/modal-card.tsx).
 
-[scrnli_8_22_2023_12-17-36 PM.webm](https://github.com/Apestein/nextflix/assets/107362680/00f9690a-8698-498a-b639-5e45b5e5518c)
+[scrnli_8_22_2023_12-17-36 PM.webm](https://github.com/zehan12/Netflix-App/assets/107362680/00f9690a-8698-498a-b639-5e45b5e5518c)
 
-#### 7. To prevent the search function from firing with every keystroke. Use the [use-debounce package](https://www.npmjs.com/package/use-debounce). [See my implementation here](<https://github.com/Apestein/nextflix/blob/main/src/app/(main)/search/search-input.tsx>). All data fetching can be done with server component by using router.push()/replace(). Pretty crazy pattern if you ask me🤯.
+#### 7. To prevent the search function from firing with every keystroke. Use the [use-debounce package](https://www.npmjs.com/package/use-debounce). [See my implementation here](<https://github.com/zehan12/Netflix-App/blob/main/src/app/(main)/search/search-input.tsx>). All data fetching can be done with server component by using router.push()/replace(). Pretty crazy pattern if you ask me🤯.
 
-[scrnli_8_22_2023_12-51-37 PM4.webm](https://github.com/Apestein/nextflix/assets/107362680/3dda2e70-97f5-4d88-beca-1cfda53fc344)
+[scrnli_8_22_2023_12-51-37 PM4.webm](https://github.com/zehan12/Netflix-App/assets/107362680/3dda2e70-97f5-4d88-beca-1cfda53fc344)
 
 #### 8. Very frustrating problem I ran into was the scrollbar causing layout shift. When users navigate from a page with scrollbar to a page without scrollbar there would be an annoying layout shift.
 
-https://github.com/Apestein/nextflix/assets/107362680/4136a245-e38f-404a-b66e-2a9c4bc1b266
+https://github.com/zehan12/Netflix-App/assets/107362680/4136a245-e38f-404a-b66e-2a9c4bc1b266
 
-The solution is to use [scrollbar-gutter css property](https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-gutter). However, the documentation is terrible and I couldn't get it to work after many hours of debugging. I ended up just googling "scrollbar-gutter not working" and found this [stackoverflow answer](https://stackoverflow.com/questions/75732399/why-doesnt-scrollbar-gutter-stable-work-on-the-body-element) lol. Basically, I just need to place scrollbar-gutter:stable on the [HTML element](https://github.com/Apestein/nextflix/blob/main/src/app/layout.tsx)🤦‍♂️. However this introduced a new bug when using "scrollbar-gutter" with modals, specifically Shadcn/ui & Radix modals. Opening a modal causes layout shift.
+The solution is to use [scrollbar-gutter css property](https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-gutter). However, the documentation is terrible and I couldn't get it to work after many hours of debugging. I ended up just googling "scrollbar-gutter not working" and found this [stackoverflow answer](https://stackoverflow.com/questions/75732399/why-doesnt-scrollbar-gutter-stable-work-on-the-body-element) lol. Basically, I just need to place scrollbar-gutter:stable on the [HTML element](https://github.com/zehan12/Netflix-App/blob/main/src/app/layout.tsx)🤦‍♂️. However this introduced a new bug when using "scrollbar-gutter" with modals, specifically Shadcn/ui & Radix modals. Opening a modal causes layout shift.
 
-[scrnli_8_25_2023_5-58-40 PM5.webm](https://github.com/Apestein/nextflix/assets/107362680/9e5e7f93-8d1a-493f-8eba-c6dc2b283805)
+[scrnli_8_25_2023_5-58-40 PM5.webm](https://github.com/zehan12/Netflix-App/assets/107362680/9e5e7f93-8d1a-493f-8eba-c6dc2b283805)
 
 Moreover, since I must set "scrollbar-gutter" on the HTML element. This meant that my whole application will have a gutter (small padding on the right) on every page, we wouldn't want a gutter on our auth pages for example. After some research, here is the solution that I came up with:
 
@@ -181,7 +181,7 @@ Edit: Unfortunately, the solution above introduced some new layout shift. But I 
   ...
 </body>
 ```
-Edit: Now I'm using [OverlayScrollbars](https://kingsora.github.io/OverlayScrollbars/). I think this is the best solution. See my implementation [here](https://github.com/Apestein/nextflix/blob/main/src/components/overlay-scrollbar.tsx).
+Edit: Now I'm using [OverlayScrollbars](https://kingsora.github.io/OverlayScrollbars/). I think this is the best solution. See my implementation [here](https://github.com/zehan12/Netflix-App/blob/main/src/components/overlay-scrollbar.tsx).
 
 #### 9. For modal using [intercepting route](https://nextjs.org/docs/app/building-your-application/routing/intercepting-routes#modals). Follow next.js [official example(https://github.com/vercel-labs/nextgram). You can only use router.back() to close the modal as far as I know. By default when opening the intercepting modal, it will cause page to scroll either all the way up or down. To prevent this, set scroll={false} on Link.
 ```ts
@@ -193,7 +193,7 @@ Edit: Now I'm using [OverlayScrollbars](https://kingsora.github.io/OverlayScroll
   key={show.id}
 >
 ```
-If you have a loading.tsx file for the modal it should go in the @modal folder [like this](<https://github.com/Apestein/nextflix/tree/main/src/app/(main)/%40modal>). You can see just how much of different intercepting modal makes vs normal modal by looking at my previous solution. [Previous](https://github.com/Apestein/nextflix/blob/normal-modal/src/components/show-card.tsx) vs [New](<https://github.com/Apestein/nextflix/blob/main/src/app/(main)/%40modal/(.)show/%5Bid%5D/page.tsx>)
+If you have a loading.tsx file for the modal it should go in the @modal folder [like this](<https://github.com/zehan12/Netflix-App/tree/main/src/app/(main)/%40modal>). You can see just how much of different intercepting modal makes vs normal modal by looking at my previous solution. [Previous](https://github.com/zehan12/Netflix-App/blob/normal-modal/src/components/show-card.tsx) vs [New](<https://github.com/zehan12/Netflix-App/blob/main/src/app/(main)/%40modal/(.)show/%5Bid%5D/page.tsx>)
 
 #### 10. To deploy to the edge, you only need 2 lines of code. Since my database is located in US East, edge can be [slower than normal serverless lambda](https://vercel.com/docs/functions/edge-functions#using-a-database-with-edge-functions) if I don't set a preferredRegion close to my database location. Currently, there is bug with Clerk and Next.js in local development if you're on Windows. Just comment out the edge runtime export when in development, when you deploy to vercel it should be fine.
 
@@ -215,6 +215,6 @@ export const preferredRegion = "iad1"
   />
 ```
 
-#### 12. You should move your linting and typechecking to Github workflows instead of Vercel, this will [greatly reduce build times](https://youtu.be/YkOSUVzOAA4?t=10047). It's very easy, just include this [file](https://github.com/Apestein/nextflix/blob/7170c65c9928bbaf296196bdc54fd4e43e64a1bb/.github/workflows/ci.yml) in .github/workflows folder. "DATABASE_URL" can be any valid URL. If using T3 Env or bootrapping with CreateT3App set "SKIP_ENV_VALIDATION: true" to skip env check on Github. 
+#### 12. You should move your linting and typechecking to Github workflows instead of Vercel, this will [greatly reduce build times](https://youtu.be/YkOSUVzOAA4?t=10047). It's very easy, just include this [file](https://github.com/zehan12/Netflix-App/blob/7170c65c9928bbaf296196bdc54fd4e43e64a1bb/.github/workflows/ci.yml) in .github/workflows folder. "DATABASE_URL" can be any valid URL. If using T3 Env or bootrapping with CreateT3App set "SKIP_ENV_VALIDATION: true" to skip env check on Github. 
 
-#### Feel free to ask me questions at [@Apestein_Dev](https://twitter.com/Apestein_Dev).
+#### Feel free to ask me questions at [@zehan12](https://twitter.com/zehan12_Dev).
